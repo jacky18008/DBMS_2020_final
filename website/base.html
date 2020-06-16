@@ -1,0 +1,17 @@
+<html>
+<head>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    {% block extra_css %}{% end %}
+    <title>{% block title %}{% end %}</title>
+</head>
+<body>
+    {% block header_content %}{% end %}
+    {% block body_content %}{% end %}
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    {% block extra_js %}{% end %}
+</body>
+</html>
