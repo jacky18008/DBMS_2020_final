@@ -68,7 +68,7 @@
 <form class="form-signin" id="edit_form">
     <h1 class="h3 mb-3 font-weight-normal">Update your info below.</h1>
 
-    <input type="hidden" name="hash" value={{HASH}}/>
+    <input type="hidden" name="hash" value="{{HASH}}" />
 
     <label for="inputName" class="sr-only">Name</label>
     <input type="text" id="inputName" name="name" class="form-control" value="{{NAME}}">
@@ -84,19 +84,28 @@
     <button class="btn btn-primary btn-inline" id="btnUpdate" type="button">Confirm</button>
 </form>
 <form id="passer" action="/" method="post" hidden>
-    <input type="text" name="hash" id="hash_holder" value="{{HASH}}"/>
+    <input type="text" name="hash" id="hash_holder" value="{{HASH}}" />
 </form>
 {% end %}
 
 {% block extra_js %}
 <script>
+    function getFormData($form){
+        var unindexed_array = $form.serializeArray();
+        var indexed_array = {};
+        $.map(unindexed_array, function(n, i){
+            indexed_array[n['name']] = n['value'];
+        });
+        return indexed_array;
+    }
     $(document).on("keydown", "form", function(event) { 
         return event.key != "Enter";
     });
     $("#btnUpdate").click(function(){
+        console.log(JSON.stringify(getFormData($( "#edit_form" ))));
         $.ajax({
             type:       'POST',
-            data:       $( "#edit_form" ).serialize(),
+            data:       getFormData($( "#edit_form" )),
             url:        'http://localhost:8888/personal_info_update',
             success:    function(response){
                             var res = JSON.parse(response);

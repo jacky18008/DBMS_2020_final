@@ -380,7 +380,7 @@ class baseHandler(tornado.web.RequestHandler):
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
         self.set_header("Access-Control-Allow-Headers", "x-requested-with")
-        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET')
 
 class hashHandler(baseHandler):
     def post(self):
@@ -442,7 +442,31 @@ class infoHandler(baseHandler):
 
 class infoUpdateHandler(baseHandler):
     def post(self):
-        pass
+        global NAME_SAMPLE
+        global PASSWORD_SAMPLE
+        global GENDER_SAMPLE
+        global HASH_SAMPLE
+        myhash = self.get_argument('hash', None)
+        if myhash:
+            if myhash == HASH_SAMPLE:
+                message = {'status': 'valid'}
+                new_name = self.get_argument('name', None)
+                NAME_SAMPLE = new_name if new_name else NAME_SAMPLE
+                new_gender = self.get_argument('gender', None)
+                GENDER_SAMPLE = new_gender if new_gender else GENDER_SAMPLE
+                new_password = self.get_argument('password', None)
+                message['message'] = "Personal Info updated Successfully!"
+                if new_password != "" and new_password != None:
+                    PASSWORD_SAMPLE = new_password
+                    global ACCOUNT_SAMPLE
+                    new_hash = hash_function(ACCOUNT_SAMPLE, PASSWORD_SAMPLE)
+                    HASH_SAMPLE = new_hash
+                    message['message'] = "re_login"
+                self.write(json.dumps(message))
+            else:
+                self.set_status(400)
+        else:
+            self.set_status(400)
 
 class searchHandler(baseHandler):
     def post(self):
