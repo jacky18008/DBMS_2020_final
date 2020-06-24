@@ -103,6 +103,17 @@ send:       {'hash': hash, 'id': id}
 receive:    null
 '''
 
+DELETE_ACCOUNT_ADDR = "%s/delete_account"%API_ADDRESS
+''' from js
+send:       {'hash': hash, 'password': pwd}
+receive:    {'status': stat, 'message': text}
+            stat:
+                success=    "valid"
+                failure=    "invalid"
+            text:
+                password error= "password incorrect"
+'''
+
 # functional group
 def hash_function(account, password):
     plain_text = str(account) + str(password)

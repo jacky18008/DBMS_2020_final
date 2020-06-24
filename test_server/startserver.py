@@ -103,6 +103,16 @@ ADD_CLICKED_MOVIE_ADDR = "%s/clicked"%API_ADDRESS
 send:       {'hash': hash, 'id': id}
 receive:    null
 '''
+DELETE_ACCOUNT_ADDR = "%s/delete_account"%API_ADDRESS
+''' from js
+send:       {'hash': hash, 'password': pwd}
+receive:    {'status': stat, 'message': text}
+            stat:
+                success=    "valid"
+                failure=    "invalid"
+            text:
+                password error= "password incorrect"
+'''
 
 PIC_URL_SAMPLE =    r"https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_UX182_CR0,0,182,268_AL_.jpg"
 HASH_SAMPLE =       r"c8837b23ff8aaa8a2dde915473ce0991"
@@ -477,6 +487,31 @@ class recHandler(baseHandler):
     def post(self):
         message = {'results': REC_LIST_SAMPLE}
         self.write(json.dumps(message))
+
+class deleteAccountHandler(baseHandler):
+    def post(self):
+        global NAME_SAMPLE
+        global PASSWORD_SAMPLE
+        global GENDER_SAMPLE
+        global HASH_SAMPLE
+        myhash = self.get_argument('hash', None)
+        if myhash:
+            if myhash == HASH_SAMPLE:
+                val_name = self.get_argument('name', None) == NAME_SAMPLE
+                val_gender = self.get_argument('gender', None) == GENDER_SAMPLE
+                val_password = self.get_argument('password', None) == PASSWORD_SAMPLE
+                if val_name and val_gender and val_password:
+                    ####delete account......####
+                    message = {'status': 'valid', 'message': 'Your Account has been Deleted Successfully!'}
+                else:
+                    message = {'status': 'invalid', 'message': 'password may be incorrect!'}
+            else:
+                self.set_status(400)
+
+            self.write(json.dumps(message))
+        else:
+            self.set_status(400)
+
         
 
 if __name__ == "__main__":
@@ -486,7 +521,8 @@ if __name__ == "__main__":
             (PERSONAL_INFO_ADDR, infoHandler),
             (PERSONAL_INFO_UPDATE_ADDR, infoUpdateHandler),
             (SEARCH_MOVIE_ADDR, searchHandler),
-            (RECOMMEND_MOVIE_ADDR, recHandler)
+            (RECOMMEND_MOVIE_ADDR, recHandler),
+            (DELETE_ACCOUNT_ADDR, deleteAccountHandler),
         ],
         settings={
             'debug': True,

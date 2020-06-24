@@ -70,18 +70,23 @@
 
     <input type="hidden" name="hash" value="{{HASH}}" />
 
-    <label for="inputName" class="sr-only">Name</label>
-    <input type="text" id="inputName" name="name" class="form-control" value="{{NAME}}">
-    <label for="inputAccount" class="sr-only">Account</label>
-    <input type="text" id="inputAccount" class="form-control" value="{{ACCOUNT}}" disabled>
-    <label for="inputPassword" class="sr-only">New Password </label>
-    <input type="text" id="inputPassword" name="password" class="form-control" placeholder="set new password">
-    
-    <label class="radio-inline"><input type="radio" name="gender" value="M" {{is_male}}>Male</label>
-    <label class="radio-inline"><input type="radio" name="gender" value="F" {{is_female}}>Female</label>
-    
+    <label for="inputName">Name：</label>
+    <input type="text" id="inputName" name="name" class="form-control" value="{{NAME}}"><br>
+    <label for="inputAccount">Account：</label>
+    <input type="text" id="inputAccount" class="form-control" value="{{ACCOUNT}}" disabled><br>
+    <label for="inputPassword">Password：</label>
+    <input type="text" id="inputPassword" name="password" class="form-control" placeholder="new password / delete account">
+    <br>
+    <div class="form-group" style="text-align: center;">
+        <label class="radio-inline"><input type="radio" name="gender" value="M" {{is_male}}>Male</label>&ensp;&ensp;&ensp;
+        <label class="radio-inline"><input type="radio" name="gender" value="F" {{is_female}}>Female</label>
+    </div>
+
+    <button class="btn btn-outline-danger btn-inline btn-sm" id="btnDelete" type="button">Delete Account</button> &ensp;| &ensp;
+
     <button class="btn btn-secondary btn-inline" id="btnLeave" type="button">Leave</button>
     <button class="btn btn-primary btn-inline" id="btnUpdate" type="button">Confirm</button>
+    
 </form>
 <form id="passer" action="/" method="post" hidden>
     <input type="text" name="hash" id="hash_holder" value="{{HASH}}" />
@@ -101,8 +106,29 @@
     $(document).on("keydown", "form", function(event) { 
         return event.key != "Enter";
     });
+    $("#btnDelete").click(function(){
+        let r = confirm("You sure you want to delete the current account?")
+        if(r){
+            $.ajax({
+                type:       'POST',
+                data:       getFormData($( "#edit_form" )),
+                url:        'http://localhost:8888/delete_account',
+                success:    function(response){
+                                var res = JSON.parse(response);
+                                console.log(res);
+                                if(res.status == 'valid'){
+                                    alert(res.message);
+                                    window.location.href = "/";
+                                }
+                                else {
+                                    alert(res.message);
+                                }
+                            }
+            });
+        }
+    });
     $("#btnUpdate").click(function(){
-        console.log(JSON.stringify(getFormData($( "#edit_form" ))));
+        //console.log(JSON.stringify(getFormData($( "#edit_form" ))));
         $.ajax({
             type:       'POST',
             data:       getFormData($( "#edit_form" )),
@@ -115,7 +141,7 @@
                                     alert("Done! Please login again!");
                                     window.location.href = "/";
                                 } else{
-                                    alert("Done!");
+                                    alert(res.message);
                                 }
                             }
                             else {
