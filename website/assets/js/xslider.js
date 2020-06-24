@@ -21,8 +21,8 @@ function show_slider_blocks(data, target){
     </div>
     `);
     if(HASH != 'null'){
-      $("#"+this_modal_id+"_activator").click(function(e){
-        $.post("clicked", {hash: HASH, id: element.id})
+      $("#"+this_modal_id+"_activator").click(function(){
+        $.post("clicked", {hash: HASH, mid: element.id});
       });
     }
   });

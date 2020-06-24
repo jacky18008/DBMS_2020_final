@@ -113,6 +113,11 @@ receive:    {'status': stat, 'message': text}
             text:
                 password error= "password incorrect"
 '''
+CLICK_THOUGH_ADDR = "%s/clicked"%API_ADDRESS
+'''
+send:       {'hash': hash, 'mid': movie_id}
+receive:    full
+'''
 
 PIC_URL_SAMPLE =    r"https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_UX182_CR0,0,182,268_AL_.jpg"
 HASH_SAMPLE =       r"c8837b23ff8aaa8a2dde915473ce0991"
@@ -122,6 +127,7 @@ NAME_SAMPLE =       r"philip"
 GENDER_SAMPLE =     r"M"
 SEARCH_LIST_SAMPLE = [
     {
+        'id':       "123",
         'name':     "AAA",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -132,6 +138,7 @@ SEARCH_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "122",
         'name':     "BBB",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -142,6 +149,7 @@ SEARCH_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "12312",
         'name':     "AAA",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -152,6 +160,7 @@ SEARCH_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "12223",
         'name':     "BBB",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -162,6 +171,7 @@ SEARCH_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "123123223",
         'name':     "AAA",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -172,6 +182,7 @@ SEARCH_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "12222222223",
         'name':     "BBB",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -182,6 +193,7 @@ SEARCH_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "12114523",
         'name':     "AAA",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -192,6 +204,7 @@ SEARCH_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "128383",
         'name':     "BBB",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -202,6 +215,7 @@ SEARCH_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "12392929",
         'name':     "AAA",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -212,6 +226,7 @@ SEARCH_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "123010101",
         'name':     "BBB",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -224,6 +239,7 @@ SEARCH_LIST_SAMPLE = [
 ]
 REC_LIST_SAMPLE = [
     {
+        'id':       "1232",
         'name':     "AAA",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -234,6 +250,7 @@ REC_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "123",
         'name':     "CCC",
         'genres':   "Comedy/Family",
         'director': "xxx",
@@ -244,6 +261,7 @@ REC_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "1231000",
         'name':     "DDD",
         'genres':   "",
         'director': "(N/A)",
@@ -254,6 +272,7 @@ REC_LIST_SAMPLE = [
         'img':      "http://www.baytownmotors.com/wp-content/uploads/2013/11/dummy-image-square.jpg"
     },
     {
+        'id':       "1230",
         'name':     "AAA",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -264,6 +283,7 @@ REC_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "123000000",
         'name':     "CCC",
         'genres':   "Comedy/Family",
         'director': "xxx",
@@ -274,6 +294,7 @@ REC_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "12301010",
         'name':     "DDD",
         'genres':   "",
         'director': "(N/A)",
@@ -284,6 +305,7 @@ REC_LIST_SAMPLE = [
         'img':      "http://www.baytownmotors.com/wp-content/uploads/2013/11/dummy-image-square.jpg"
     },
     {
+        'id':       "123736663",
         'name':     "AAA",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -294,6 +316,7 @@ REC_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "12366699",
         'name':     "CCC",
         'genres':   "Comedy/Family",
         'director': "xxx",
@@ -304,6 +327,7 @@ REC_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "12327",
         'name':     "DDD",
         'genres':   "",
         'director': "(N/A)",
@@ -314,6 +338,7 @@ REC_LIST_SAMPLE = [
         'img':      "http://www.baytownmotors.com/wp-content/uploads/2013/11/dummy-image-square.jpg"
     },
     {
+        'id':       "123767",
         'name':     "AAA",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -324,6 +349,7 @@ REC_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "123890",
         'name':     "CCC",
         'genres':   "Comedy/Family",
         'director': "xxx",
@@ -334,6 +360,7 @@ REC_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "12443",
         'name':     "DDD",
         'genres':   "",
         'director': "(N/A)",
@@ -344,6 +371,7 @@ REC_LIST_SAMPLE = [
         'img':      "http://www.baytownmotors.com/wp-content/uploads/2013/11/dummy-image-square.jpg"
     },
     {
+        'id':       "12279453",
         'name':     "AAA",
         'genres':   "Action/Romance",
         'director': "xxx",
@@ -354,6 +382,7 @@ REC_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "123009",
         'name':     "CCC",
         'genres':   "Comedy/Family",
         'director': "xxx",
@@ -364,6 +393,7 @@ REC_LIST_SAMPLE = [
         'img':      PIC_URL_SAMPLE
     },
     {
+        'id':       "12390909909090",
         'name':     "DDD",
         'genres':   "",
         'director': "(N/A)",
@@ -512,6 +542,13 @@ class deleteAccountHandler(baseHandler):
         else:
             self.set_status(400)
 
+class clickThoughHandler(baseHandler):
+    def post(self):
+        mid = self.get_argument("mid", None)
+        myhash = self.get_argument("hash", None)
+        #### clicked +1 for movie, by hash_user....###
+        if myhash and mid:
+            print('%s clicked %s'%(myhash, mid))
         
 
 if __name__ == "__main__":
@@ -523,6 +560,7 @@ if __name__ == "__main__":
             (SEARCH_MOVIE_ADDR, searchHandler),
             (RECOMMEND_MOVIE_ADDR, recHandler),
             (DELETE_ACCOUNT_ADDR, deleteAccountHandler),
+            (CLICK_THOUGH_ADDR, clickThoughHandler)
         ],
         settings={
             'debug': True,

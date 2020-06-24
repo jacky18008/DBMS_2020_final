@@ -113,6 +113,11 @@ receive:    {'status': stat, 'message': text}
             text:
                 password error= "password incorrect"
 '''
+CLICK_THOUGH_ADDR = "%s/clicked"%API_ADDRESS
+'''
+send:       {'hash': hash, 'mid': movie_id}
+receive:    full
+'''
 
 # functional group
 def hash_function(account, password):
@@ -135,6 +140,14 @@ def get_timestamp():
     now = datetime.now()
     dt_string = now.strftime("%Y%m%d%H%M")
     return dt_string
+
+class clickThoughHandler(tornado.web.RequestHandler):
+    def post(self):
+        mid = self.get_argument("mid", None)
+        myhash = self.get_argument("hash", None)
+        #### clicked +1 for movie, by hash_user....###
+        if myhash and mid:
+            _ = req.post(CLICK_THOUGH_ADDR, {'hash':myhash, 'mid':mid})
 
 
 
@@ -202,6 +215,8 @@ if __name__ == "__main__":
             (r"/edit", editHandler),
             (r"/login", loginHandler),
             (r"/register", registerHandler),
+
+            (r"/clicked", clickThoughHandler),
 
             (r'/js/(.*)', tornado.web.StaticFileHandler, {'path': 'assets/js'}),
             (r'/css/(.*)', tornado.web.StaticFileHandler, {'path': 'assets/css'}),
