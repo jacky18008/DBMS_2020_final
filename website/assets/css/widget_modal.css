@@ -1,0 +1,9 @@
+.modal-full {
+    min-width: 20%;
+    /*margin-left: 80;*/
+}
+
+.modal-full .modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
+}

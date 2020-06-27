@@ -1,0 +1,41 @@
+.related-title {
+    color: #32488d;
+    font-size: 24px; 
+    padding-bottom: 4px;
+    font-weight: 500 !important;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .related-articles-row {
+    display: flex !important;
+    overflow-x: auto !important;
+  }
+  .related-article { 
+    min-width: 17% !important;
+    padding: 0 10px !important;
+    min-height: 400px;
+  }
+  .related-article .post-img {
+    height: 230px;
+    margin: 10px 0px; 
+  }
+  .related-article .post-img img {
+    object-fit: cover;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .related-article .post-title {
+    min-height: 30px;
+    font-size: 17px;
+    line-height: 1.1;
+    font-weight: 500;
+  }
+  .related-article .post-title a {
+    color: #5a5a5a;
+  }
+  .related-article .post-description {
+    font-size: 14px;
+    line-height: 1.3;
+    margin-top: 5px !important;
+  }
+

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="css/header_override.css?v={{TIMESTAMP}}" />
+    <link rel="stylesheet" href="css/widget_xslider.css?v={{TIMESTAMP}}" />
+    <link rel="stylesheet" href="css/widget_modal.css?v={{TIMESTAMP}}" />
+{% end %}
+
+{% block header_content %}
+    {% include "widget/header_full.html" %}
+{% end %}
+
+{% block body_content %}
+    <div class="jumbotron">
+    <h2>Recommendations for you today...</h2>
+    <div id="rec_results" class="col-xs-12 no-padding related-articles-row" style="display: flex;overflow-x: auto;word-wrap: break-word;"></div>
+    <span id="rec_results_modals"></span>
+    </div>
+    <hr/>
+    
+    {% include "widget/search.html" %}
+{% end %}
+
+{% block extra_js %}
+<script>var HASH = '{{HASH}}';</script>
+<script src="js/xslider.js?v={{TIMESTAMP}}"></script>
+<script src="js/modal.js?v={{TIMESTAMP}}"></script>
+<script src="js/api_search.js?v={{TIMESTAMP}}"></script>
+<script>
+    $.ajax({
+        type:       'POST',
+        data:       { hash: HASH },
+        url:        'http://localhost:8888/recommend',
+        success:    function(response){
+                        var res = JSON.parse(response);
+                        console.log(res);
+                        $('#rec_results_modals').html("");
+                        res = res.results;
+                        show_slider_blocks(res, "rec_results");
+                    }
+    });
+</script>
+{% end %}

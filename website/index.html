@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Personal Recommendation System{% end %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="css/header_override.css?v={{TIMESTAMP}}" />
+    <link rel="stylesheet" href="css/widget_xslider.css?v={{TIMESTAMP}}" />
+    <link rel="stylesheet" href="css/widget_modal.css?v={{TIMESTAMP}}" />
+{% end %}
+
+{% block header_content %}
+    {% include "widget/header_login.html" %}
+{% end %}
+
+{% block body_content %}
+    {% include "widget/search.html" %}
+{% end %}
+
+{% block extra_js %}
+    <script>var HASH = 'null';</script>
+    <script src="js/xslider.js?v={{TIMESTAMP}}"></script>
+    <script src="js/modal.js?v={{TIMESTAMP}}"></script>
+    <script src="js/api_search.js?v={{TIMESTAMP}}"></script>
+{% end %}
