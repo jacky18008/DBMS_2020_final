@@ -5,7 +5,7 @@ import requests as req
 import json
 import os
 from api_addr import *
-from util import *
+from util import * #hash_function, get_timestamp, start_sql_connection, search
 
 
 SQL_CONNECTION = start_sql_connection()
@@ -46,10 +46,12 @@ class regHandler(baseHandler):
             else:
                 new_hash = hash_function(account, password)
                 SQL_CONNECTION.execute(
-                    'INSERT OR IGNORE INTO user (name, account, password, gender, md5) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                    'INSERT OR IGNORE INTO user (name, account, password, gender, md5) VALUES (?, ?, ?, ?, ?)',
                     (name, account, password, gender, new_hash)
                 ); SQL_CONNECTION.commit()
                 message = {'status': "valid"}
+                FAST_ACCOUNT_VERIFICATION.add(account)
+                FAST_HASH_VERIFICATION.add(new_hash)
             self.write(json.dumps(message))
         else:
             self.set_status(400)
@@ -91,6 +93,8 @@ class infoUpdateHandler(baseHandler):
                 if new_password != "" and new_password != None:
                     new_hash = hash_function(account, new_password)
                     message['message'] = "re_login"
+                    FAST_HASH_VERIFICATION.remove(myhash)
+                    FAST_HASH_VERIFICATION.add(new_hash)
                 else:
                     new_password = pre_password
                     new_hash = myhash
@@ -105,7 +109,7 @@ class infoUpdateHandler(baseHandler):
                         WHERE md5=?
                     ''',
                     (new_name, new_password, new_gender, new_hash, new_hash),
-                ); SQL_CONNECTION.commit()
+                ); SQL_CONNECTION.commit() 
 
                 self.write(json.dumps(message))
             else:
@@ -120,6 +124,7 @@ class deleteAccountHandler(baseHandler):
             if myhash in FAST_HASH_VERIFICATION:
                 result = list(SQL_CONNECTION.execute('SELECT * FROM user WHERE md5 = ?', (myhash,)))[0]
                 name = result[1]
+                account = result[2]
                 password = result[3]
                 gender = result[4]
                 val_name = self.get_argument('name', None) == name
@@ -128,6 +133,8 @@ class deleteAccountHandler(baseHandler):
                 if val_name and val_gender and val_password:
                     SQL_CONNECTION.execute('DELETE FROM user WHERE md5=?', (myhash, )); SQL_CONNECTION.commit()
                     message = {'status': 'valid', 'message': 'Your Account has been Deleted Successfully!'}
+                    FAST_HASH_VERIFICATION.remove(myhash)
+                    FAST_ACCOUNT_VERIFICATION.remove(account)
                 else:
                     message = {'status': 'invalid', 'message': 'personal info or password may be incorrect!'}
             else:
@@ -141,13 +148,17 @@ class deleteAccountHandler(baseHandler):
 class searchHandler(baseHandler):
     def post(self):
         query = self.get_argument("query", None)
-        message = {'results': SEARCH_LIST_SAMPLE}
+        message = {'results': search(SQL_CONNECTION, query)}
         self.write(json.dumps(message))
 
 class recHandler(baseHandler):
     def post(self):
-        message = {'results': REC_LIST_SAMPLE}
-        self.write(json.dumps(message))
+        myhash = self.get_argument("hash", None)
+        if myhash not in FAST_HASH_VERIFICATION:
+            self.write(json.dumps({'results':[]}))
+        else:
+            message = {'results': recommend(SQL_CONNECTION, myhash)}
+            self.write(json.dumps(message))
 
 class clickThoughHandler(baseHandler):
     def post(self):
