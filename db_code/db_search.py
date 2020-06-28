@@ -14,12 +14,16 @@ def main():
 
     mword = 'The Duck'
     mtype = 'Animation Children'
+    mcomany = 'Zucker Brothers Productions'
 
     search_title_result = search_title(c, mword)
     # print(search_title_result)
 
     search_type_result = search_type(c, mtype)
     # print(search_type_result)
+
+    search_company_result = search_company(c, mcomany)
+    # print(search_company_result)
 
     conn.commit()
     conn.close()
@@ -48,6 +52,21 @@ def search_type(c, mtype):
             search_type_result.add(row)
 
     return search_type_result
+
+
+def search_company(c, mcompany):
+    search_company_result = set()
+    company_list = mcompany.split(' ')
+    for acompany in company_list:
+        search_company_q = c.execute(f'''
+                SELECT DISTINCT movie.*
+                FROM movie, company
+                WHERE company.production_company like "%{acompany}%" AND company.movie_id=movie.movie_id
+            ''')
+        for row in search_company_q:
+            search_company_result.add(row)
+
+    return search_company_result
 
 
 if __name__ == '__main__':
