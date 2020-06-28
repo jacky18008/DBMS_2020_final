@@ -51,7 +51,7 @@ def search(conn, query, total_each=8, total=12):
             'company':  company,
             'year':     str(cursor[1]),
             'actors':   actors,
-            'description': "<i>%s<i> | %s"%(cursor[5], cursor[4]),
+            'description': "<i>“%s”</i>&nbsp;&nbsp;%s"%(cursor[5], cursor[4]),
             'img': cursor[6]
         }
         title_results.append(this_result)
@@ -93,7 +93,7 @@ def search(conn, query, total_each=8, total=12):
             'company':  company,
             'year':     str(cursor[1]),
             'actors':   actors,
-            'description': "<i>%s<i> | %s"%(cursor[5], cursor[4]),
+            'description': "<i>“%s”</i>&nbsp;&nbsp; %s"%(cursor[5], cursor[4]),
             'img': cursor[6]
         }
         type_results.append(this_result)
@@ -134,7 +134,7 @@ def search(conn, query, total_each=8, total=12):
             'company':  company,
             'year':     str(cursor[1]),
             'actors':   actors,
-            'description': "<i>%s<i> | %s"%(cursor[5], cursor[4]),
+            'description': "<i>“%s”</i>&nbsp;&nbsp; %s"%(cursor[5], cursor[4]),
             'img': cursor[6]
         }
         company_results.append(this_result)
@@ -198,7 +198,7 @@ def recommend(conn, user_hash, total=12):
             'company':  company,
             'year':     str(cursor[1]),
             'actors':   actors,
-            'description': "<i>%s<i> | %s"%(cursor[5], cursor[4]),
+            'description': "<i>“%s”</i>&nbsp;&nbsp; %s"%(cursor[5], cursor[4]),
             'img': cursor[6]
         }
         recs.append(this_result)
