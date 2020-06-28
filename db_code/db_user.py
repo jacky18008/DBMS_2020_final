@@ -23,8 +23,7 @@ def main():
     account = 'aaaa'
     # password = 'asdf'
     # gender = 'F'
-    # age = 23
-    # create_new_user(c, name, account, password, gender, age)
+    # create_new_user(c, name, account, password, gender)
 
     # update_dic = {'name': 'aaa', 'password': 'ssss'}
     # update_user_info(c, account, update_dic)
@@ -43,21 +42,20 @@ def check_user_account(c, user_account):
         account = row[2]
         password = row[3]
         gender = row[4]
-        age = row[5]
-        md5 = row[6]
+        md5 = row[5]
     # print(row)
     return row
 
 
 # create new user
-def create_new_user(c, name, account, password, gender, age):
+def create_new_user(c, name, account, password, gender):
     user_count = c.execute("SELECT COUNT() FROM user").fetchone()[0] + 1
     decode_data = account + password
     md5.update(decode_data.encode("utf-8"))
     h = md5.hexdigest()
     c.execute(
-        'INSERT OR IGNORE INTO user (user_id, name, account, password, gender, age, md5) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        (user_count, name, account, password, gender, age, h)
+        'INSERT OR IGNORE INTO user (user_id, name, account, password, gender, md5) VALUES (?, ?, ?, ?, ?, ?)',
+        (user_count, name, account, password, gender, h)
     )
     # check_user_account(c, account)
 
@@ -84,12 +82,11 @@ def update_user_info(c, account, update_dic):
                 account=?,
                 password=?,
                 gender=?,
-                age=?,
                 md5=?
                 WHERE user_id=?
             ''',
         (info_dic['name'], info_dic['account'], info_dic['password'],
-         info_dic['gender'], info_dic['age'], h, info_dic['user_id'],),
+         info_dic['gender'], h, info_dic['user_id'],),
     )
     # check_user_account(c, account)
 
