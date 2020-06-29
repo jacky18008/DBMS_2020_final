@@ -205,6 +205,40 @@ def recommend(conn, user_hash, total=12):
     return recs
     
 
+def cold_recommend(conn):
+    mids = ['999', '998', '997', '996', '994', '993', '992', '991', '990', '99']
+    results = []
+    for mid in mids:
+        cursor = list(conn.execute('SELECT * FROM movie WHERE movie.movie_id = ?', (mid,)))[0]
+        try:
+            genres = '/'.join([ c[0] for c in conn.execute("select type from type where movie_id=?",(cursor[0],)) ])
+        except:
+            genres = '(N/A)'
+        try:
+            director = list(conn.execute("select director from director where movie_id=?",(cursor[0],)))[0][0]
+        except:
+            director = '(N/A)'
+        try:
+            company = list(conn.execute("select company from company where movie_id=?",(cursor[0],)))[0][0]
+        except:
+            company = '(N/A)'
+        try:
+            actors = ', '.join([ c[0] for c in conn.execute("select actor_actress from actor where movie_id=?",(cursor[0],)) ])
+        except:
+            actors = '(N/A)'
+        this_result = {
+            'id':       cursor[0],
+            'name':     cursor[2],
+            'genres':   genres,
+            'director': director,
+            'company':  company,
+            'year':     str(cursor[1]),
+            'actors':   actors,
+            'description': "<i>“%s”</i>&nbsp;&nbsp;%s"%(cursor[5], cursor[4]),
+            'img': cursor[6]
+        }
+        results.append(this_result)
+    return results
 
 
 
