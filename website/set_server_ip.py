@@ -1,28 +1,38 @@
 import os, sys
 
 L = "'http://"
-R = ":"
+R = ":8888"
 
 def ip_replacer(fpath, new_ip, Ld, Rd):
     new_content = ""
 
-    with open(fpath) as f:
+    with open(fpath, 'r', encoding='utf8') as f:
         all_content = f.read()
+        print("file:\t\t%s"%fpath)
 
-        part_A, part_B = all_content.split(Ld)
-        part_A = part_A + Ld
+        ip_left = all_content.find(Ld)
+        while ip_left != -1:
+            part_A = all_content[:ip_left]
+            part_B = all_content[ip_left+len(Ld):]
 
-        curr_IP, part_B = part_B.aplit(Rd)
-        part_B = Rd + part_B
+            ip_right = part_B.find(Rd)
+            if ip_right == -1:
+                break
+            else:
+                curr_ip = part_B[:ip_right]
+                part_B = part_B[ip_right:]
 
-        print("file:\t\t\t%s"%fpath)
-        print("current ip:\t%s"%curr_IP)
-        print("new ip:\t\t%s"%new_ip)
+            new_content += part_A + Ld + new_ip + Rd
 
-        new_content = part_A + new_ip + part_B
-
-    with open(fpath, 'w') as f:
-        fpath.write(new_content)
+            print("current ip:\t%s"%curr_ip)
+            print("new ip:\t\t%s"%new_ip)
+            
+            all_content = part_B[len(Rd):]
+            ip_left = all_content.find(Ld)
+        new_content += all_content
+    
+    with open(fpath, 'w', encoding='utf8') as f:
+        f.write(new_content)
 
 files = ["dashboard.html", "register.html", "edit.html", "assets/js/api_search.js"]
 
