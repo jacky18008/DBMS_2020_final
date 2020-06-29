@@ -168,11 +168,32 @@ class recHandler(baseHandler):
 
 class clickThoughHandler(baseHandler):
     def post(self):
-        mid = self.get_argument("mid", None)
-        myhash = self.get_argument("hash", None)
-        #### clicked +1 for movie, by hash_user....###
-        if myhash and mid:
-            print('%s clicked %s'%(myhash, mid))
+        try:
+            mid = self.get_argument("mid", None)
+            myhash = self.get_argument("hash", None)
+            if myhash and mid:
+                print('%s clicked %s'%(myhash, mid))
+                user_id = list(SQL_CONNECTION.execute("SELECT user_id from user WHERE md5=?",(myhash,)))[0][0]
+                movie_id = mid
+                my_res = list(SQL_CONNECTION.execute('SELECT * FROM click WHERE user_id = ? AND movie_id = ?', (user_id, movie_id)))[0]
+                is_exist = len(my_res) > 0
+                if is_exist:
+                    clicks = my_res[3] + 1
+                    SQL_CONNECTION.execute(
+                        '''
+                            UPDATE click
+                            SET click=?
+                            WHERE user_id=? AND movie_id = ?
+                        ''',
+                        (clicks, user_id, movie_id),
+                    )
+                else:
+                    SQL_CONNECTION.execute(
+                        'INSERT OR IGNORE INTO click (user_id, movie_id, rating, click) VALUES (?, ?, ?, ?)',
+                        (user_id, movie_id, 3, 1)
+                    )
+        except:
+            pass
         
 
 if __name__ == "__main__":
