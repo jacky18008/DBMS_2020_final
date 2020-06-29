@@ -12,7 +12,7 @@ c = conn.cursor()
 
 c.execute('''
     CREATE TABLE "user" (
-        "user_id"            INTEGER                            NOT NULL,
+        "user_id"            INTEGER   NOT NULL AUTOINCREMENT,
         "name"         TEXT            NOT NULL,
         "account"      TEXT       NOT NULL,
         "password"         TEXT            NOT NULL,
