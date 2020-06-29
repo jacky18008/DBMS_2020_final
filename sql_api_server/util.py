@@ -64,7 +64,8 @@ def search(conn, query, total_each=8, total=16):
                                     FROM movie
                                     WHERE movie.storyline like "%{query}%" limit {total_each}
                                 ''')):
-        result_id.add(cursor[0])
+        if cursor[0] in result_id:
+            continue
         try:
             genres = '/'.join([ c[0] for c in conn.execute("select type from type where movie_id=?",(cursor[0],)) ])
         except:
