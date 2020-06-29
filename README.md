@@ -9,6 +9,3 @@ using [SQL file](https://drive.google.com/open?id=15H_NnfM33FYJO-HLSnuzr-a3msspq
 ```bash
 psql -f "ml1m" -U username
 ```
-
-![ER model](imgcache/ER_model.png)
-![Relational Model](imgcache/R_model.png)
