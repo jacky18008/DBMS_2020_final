@@ -13,9 +13,10 @@ def main():
     c = conn.cursor()
 
     user_id = 1
-    movie_id = 588
+    movie_id = 1357
     # click_info = check_click(c, user_id, movie_id)
-    click(c, user_id, movie_id)
+    # click(c, user_id, movie_id)
+    click_not_in(c, user_id, movie_id)
     # print(click_info)
 
     conn.commit()
@@ -51,8 +52,8 @@ def click(c, user_id, movie_id):
 # insert click data
 def click_not_in(c, user_id, movie_id):
     c.execute(
-        'INSERT OR IGNORE INTO click (user_id, movie_id, rating, click) VALUES (?, ?, ?, ?)',
-        (user_id, movie_id, NULL, 1)
+        'INSERT OR IGNORE INTO click (user_id, movie_id, click) VALUES (?, ?, ?)',
+        (user_id, movie_id, 1)
     )
 
 
