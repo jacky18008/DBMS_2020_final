@@ -46,6 +46,13 @@
 - Backend is provided by [Tornado](https://www.tornadoweb.org/en/stable/) (`#python`)
 - SQL queries are safe and cannot be SQL injected :)
 
+### 0. install requirements
+- python version >= 3.6
+- tornado >= 6.0.0
+```bash
+pip3 install -r requirements.txt
+```
+
 ### 1. setup web service
 - for windows, simply click `website_server/start.bat`.
 - for general OS systems:
