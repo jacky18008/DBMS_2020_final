@@ -11,6 +11,8 @@ from util import * #hash_function, get_timestamp, start_sql_connection, search
 SQL_CONNECTION = start_sql_connection()
 FAST_HASH_VERIFICATION = set([r[0] for r in SQL_CONNECTION.execute('SELECT md5 FROM user')])
 FAST_ACCOUNT_VERIFICATION = set([r[0] for r in SQL_CONNECTION.execute('SELECT account FROM user')])
+NEW_COMER_HASH = set()
+
 
 class baseHandler(tornado.web.RequestHandler):
     def set_default_headers(self):
@@ -52,6 +54,7 @@ class regHandler(baseHandler):
                 message = {'status': "valid"}
                 FAST_ACCOUNT_VERIFICATION.add(account)
                 FAST_HASH_VERIFICATION.add(new_hash)
+                NEW_COMER_HASH.add(new_hash)
             self.write(json.dumps(message))
         else:
             self.set_status(400)
@@ -157,7 +160,10 @@ class recHandler(baseHandler):
         if myhash not in FAST_HASH_VERIFICATION:
             self.write(json.dumps({'results':[]}))
         else:
-            message = {'results': recommend(SQL_CONNECTION, myhash)}
+            if myhash in NEW_COMER_HASH:
+                message = {'results': cold_recommend(SQL_CONNECTION)}
+            else:
+                message = {'results': recommend(SQL_CONNECTION, myhash)}
             self.write(json.dumps(message))
 
 class clickThoughHandler(baseHandler):
