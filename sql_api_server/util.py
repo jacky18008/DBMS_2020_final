@@ -248,7 +248,7 @@ def recommend(conn, user_hash, total_each=6):
         recs.append(this_result)
     
     for cursor in list(conn.execute('''
-                SELECT DISTINCT movie.movie_id
+                SELECT DISTINCT movie.*
                 FROM click, director AS adirector, director AS bdirector, movie
                 WHERE click.user_id=?
                 AND click.movie_id=adirector.movie_id
@@ -287,7 +287,7 @@ def recommend(conn, user_hash, total_each=6):
         }
         recs.append(this_result)
 
-    for cursor in list(conn.execute('''
+    for curaor in list(conn.execute('''
                 SELECT DISTINCT movie.*
                 FROM click, actor AS aactor, actor AS bactor, movie
                 WHERE click.user_id=?
