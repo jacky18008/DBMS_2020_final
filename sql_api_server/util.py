@@ -208,15 +208,16 @@ def search(conn, query, total_each=8, total=16):
         return output_results
 
 
-def recommend(conn, user_hash, total=12):
+def recommend(conn, user_hash, total_each=6):
     user_id = list(conn.execute('select user_id from user where md5=?',(user_hash,)))[0][0]
+    
     recs = []
     for cursor in list(conn.execute('''
                             SELECT DISTINCT movie.*
                             FROM model, movie
                             WHERE model.user_id=?
                             AND model.movie_id=movie.movie_id limit ?
-                        ''', (user_id, total))):
+                        ''', (user_id, total_each))):
         try:
             genres = '/'.join([ c[0] for c in conn.execute("select type from type where movie_id=?",(cursor[0],)) ])
         except:
@@ -245,6 +246,87 @@ def recommend(conn, user_hash, total=12):
             'img': cursor[6]
         }
         recs.append(this_result)
+    
+    for cursor in list(conn.execute('''
+                SELECT DISTINCT movie.movie_id
+                FROM click, director AS adirector, director AS bdirector, movie
+                WHERE click.user_id=?
+                AND click.movie_id=adirector.movie_id
+                AND adirector.director=bdirector.director
+                AND movie.movie_id=bdirector.movie_id
+                GROUP BY bdirector.movie_id
+                ORDER BY MAX(click.click) DESC
+                LIMIT ?
+            ''', (user_id, total_each))):
+        try:
+            genres = '/'.join([ c[0] for c in conn.execute("select type from type where movie_id=?",(cursor[0],)) ])
+        except:
+            genres = '(N/A)'
+        try:
+            director = list(conn.execute("select director from director where movie_id=?",(cursor[0],)))[0][0]
+        except:
+            director = '(N/A)'
+        try:
+            company = list(conn.execute("select company from company where movie_id=?",(cursor[0],)))[0][0]
+        except:
+            company = '(N/A)'
+        try:
+            actors = ', '.join([ c[0] for c in conn.execute("select actor_actress from actor where movie_id=?",(cursor[0],)) ])
+        except:
+            actors = '(N/A)'
+        this_result = {
+            'id':       cursor[0],
+            'name':     cursor[2],
+            'genres':   genres,
+            'director': director,
+            'company':  company,
+            'year':     str(cursor[1]),
+            'actors':   actors,
+            'description': "<i>“%s”</i>&nbsp;&nbsp; %s"%(cursor[5], cursor[4]),
+            'img': cursor[6]
+        }
+        recs.append(this_result)
+
+    for cursor in list(conn.execute('''
+                SELECT DISTINCT movie.*
+                FROM click, actor AS aactor, actor AS bactor, movie
+                WHERE click.user_id=?
+                AND click.movie_id=aactor.movie_id
+                AND aactor.actor_actress=bactor.actor_actress
+                AND movie.movie_id=bactor.movie_id
+                GROUP BY bactor.movie_id
+                ORDER BY MAX(click.click) DESC
+                LIMIT ?
+            ''', (user_id, total_each))):
+        try:
+            genres = '/'.join([ c[0] for c in conn.execute("select type from type where movie_id=?",(cursor[0],)) ])
+        except:
+            genres = '(N/A)'
+        try:
+            director = list(conn.execute("select director from director where movie_id=?",(cursor[0],)))[0][0]
+        except:
+            director = '(N/A)'
+        try:
+            company = list(conn.execute("select company from company where movie_id=?",(cursor[0],)))[0][0]
+        except:
+            company = '(N/A)'
+        try:
+            actors = ', '.join([ c[0] for c in conn.execute("select actor_actress from actor where movie_id=?",(cursor[0],)) ])
+        except:
+            actors = '(N/A)'
+        this_result = {
+            'id':       cursor[0],
+            'name':     cursor[2],
+            'genres':   genres,
+            'director': director,
+            'company':  company,
+            'year':     str(cursor[1]),
+            'actors':   actors,
+            'description': "<i>“%s”</i>&nbsp;&nbsp; %s"%(cursor[5], cursor[4]),
+            'img': cursor[6]
+        }
+        recs.append(this_result)
+        
     return recs
 
 
