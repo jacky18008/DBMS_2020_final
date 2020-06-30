@@ -73,6 +73,6 @@ pip3 install -r requirements.txt
 - for general OS systems:
     ```bash
     cd sql_api_server
-    python startserver.py
+    python correct_md5.py && startserver.py
     ```
 - notice that this sql api service can be only used on localhost for security issues. (http://127.0.0.1:8888)
